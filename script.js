@@ -134,9 +134,8 @@ function startSpin() {
   // ✨ Trigger glare animation
   const reelContainers = document.querySelectorAll('.reel-container');
   reelContainers.forEach(container => {
-    container.classList.add('animate-glare');
-    setTimeout(() => container.classList.remove('animate-glare'), 1000);
-  });
+      const reelContainers = document.querySelectorAll('.reel-container');
+  reelContainers.forEach(container => container.classList.add('glare-active'));
 
   reels.forEach((reel, i) => {
     reel.spinning = true;
