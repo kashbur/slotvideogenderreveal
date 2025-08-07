@@ -94,7 +94,7 @@ function animate() {
     reel.pos += reel.speed;
     const scrollH = reel.height;
 
-    if (reel.pos >= scrollH) reel.pos = 0;
+    if (reel.pos >= scrollH) reel.pos -= scrollH;
 
     reel.strip.style.transform = `translateY(${-reel.pos}px)`;
     reel.clone.style.transform = `translateY(${-reel.pos + scrollH}px)`;
