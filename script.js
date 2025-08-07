@@ -63,6 +63,7 @@ window.addEventListener('load', () => {
     const reel = {
       strip,
       clone,
+      container: strip.parentNode.parentNode,
       height: 0,
       pos: 0,
       speed: speeds[i],
@@ -138,10 +139,8 @@ function startSpin() {
     reel.strip.classList.add('spinning');
     reel.clone.classList.add('spinning');
     reel.clone.style.display = '';
+    reel.container.classList.add('animate-glare');
   });
-
-  const reelContainers = document.querySelectorAll('.reel-container');
-  reelContainers.forEach(container => container.classList.add('glare-active'));
 
   animate();
 
@@ -153,11 +152,11 @@ function startSpin() {
       reels[i].clone.classList.remove('spinning');
       alignToIcon(reels[i], chosen[i]);
       reels[i].clone.style.display = 'none';
+      reels[i].container.classList.remove('animate-glare');
 
       if (i === reels.length - 1) {
         cancelAnimationFrame(rafId);
         isSpinning = false;
-        reelContainers.forEach(container => container.classList.remove('glare-active'));
       }
     }, delay);
   });
