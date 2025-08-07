@@ -39,15 +39,35 @@ function selectIcons() {
 }
 
 strips.forEach((strip, i) => {
+  const fragment = document.createDocumentFragment();
   for (let j = 0; j < 30; j++) {
     const img = document.createElement("img");
     img.src = icons[j % icons.length];
-    strip.appendChild(img);
+    fragment.appendChild(img);
   }
-  const height = strip.scrollHeight;
-  const clone = strip.cloneNode(true);
-  strip.parentNode.appendChild(clone);
-  reels.push({ strip, clone, height, pos: 0, speed: speeds[i], spinning: false });
+// Append a prebuilt fragment of icons (assumed created earlier for performance)
+strip.appendChild(fragment);
+
+// Clone the strip and append it for infinite scroll illusion
+const clone = strip.cloneNode(true);
+strip.parentNode.appendChild(clone);
+
+// Capture heights and images
+const height = strip.scrollHeight;
+const images = strip.querySelectorAll("img");
+const iconHeight = images[0]?.offsetHeight || 0;
+
+// Push full reel data
+reels.push({
+  strip,
+  clone,
+  height,
+  pos: 0,
+  speed: speeds[i],
+  spinning: false,
+  images,
+  iconHeight
+});
 });
 
 function animate() {
@@ -70,8 +90,8 @@ function animate() {
 }
 
 function alignToIcon(reel, targetURL) {
-  const imgs = reel.strip.querySelectorAll("img");
-  const iconHeight = imgs[0].offsetHeight;
+  const imgs = reel.images;
+  const iconHeight = reel.iconHeight;
   const centerOffset = reel.strip.offsetHeight / 2 - iconHeight / 2;
 
   for (let i = 10; i < imgs.length; i++) {
