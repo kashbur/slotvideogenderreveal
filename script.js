@@ -80,8 +80,8 @@ function animate() {
 
     if (reel.pos >= scrollH) reel.pos = 0;
 
-    reel.strip.style.transform = `translateY(${reel.pos}px)`;
-    reel.clone.style.transform = `translateY(${reel.pos - scrollH}px)`;
+    reel.strip.style.transform = `translateY(${-reel.pos}px)`;
+    reel.clone.style.transform = `translateY(${-reel.pos + scrollH}px)`;
 
     anySpinning = true;
   });
@@ -99,8 +99,8 @@ function alignToIcon(reel, targetURL) {
     if (imgs[i].src.includes(targetURL)) {
       const offset = i * iconHeight;
       reel.pos = offset - centerOffset;
-      reel.strip.style.transform = `translateY(${reel.pos}px)`;
-      reel.clone.style.transform = `translateY(${reel.pos - reel.height}px)`;
+      reel.strip.style.transform = `translateY(${-reel.pos}px)`;
+      reel.clone.style.transform = `translateY(${-reel.pos + reel.height}px)`;
       break;
     }
   }
