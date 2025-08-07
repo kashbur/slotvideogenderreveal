@@ -46,7 +46,7 @@
       justify-content: center;
     }
 
-    .strip-item img {
+    .strip img {
       width: 150%;
       height: 150%;
       object-fit: contain;
@@ -200,9 +200,12 @@
 
     strips.forEach((strip, i) => {
       for (let j = 0; j < 30; j++) {
+        const item = document.createElement("div");
+        item.className = "strip-item";
         const img = document.createElement("img");
         img.src = icons[j % icons.length];
-        strip.appendChild(img);
+        item.appendChild(img);
+        strip.appendChild(item);
       }
       const clone = strip.cloneNode(true);
       strip.parentNode.appendChild(clone);
