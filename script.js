@@ -52,6 +52,7 @@ window.addEventListener('load', () => {
     strip.appendChild(fragment);
 
     const clone = strip.cloneNode(true);
+    clone.style.display = 'none';
     strip.parentNode.appendChild(clone);
 
     const images = strip.querySelectorAll("img");
