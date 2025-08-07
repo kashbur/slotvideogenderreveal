@@ -52,8 +52,7 @@
 }
 
 .reel-container.animate-glare::after {
-  animation: reel-glare 1s ease-in-out;
-  opacity: 1;
+  animation: reel-glare 1s linear infinite;
 }
 
 @keyframes reel-glare {
