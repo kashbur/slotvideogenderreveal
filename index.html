@@ -47,8 +47,8 @@
     }
 
     .strip-item img {
-      width: 150%;
-      height: 150%;
+      width: 100%;
+      height: 100%;
       object-fit: contain;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
     }
@@ -202,7 +202,10 @@
       for (let j = 0; j < 30; j++) {
         const img = document.createElement("img");
         img.src = icons[j % icons.length];
-        strip.appendChild(img);
+        const item = document.createElement('div');
+        item.className = 'strip-item';
+        item.appendChild(img);
+        strip.appendChild(item);
       }
       const clone = strip.cloneNode(true);
       strip.parentNode.appendChild(clone);
@@ -229,12 +232,13 @@
     }
 
     function alignToIcon(reel, targetURL) {
-      const imgs = reel.strip.querySelectorAll("img");
-      const iconHeight = imgs[0].offsetHeight;
+      const items = reel.strip.querySelectorAll('.strip-item');
+      const iconHeight = items[0].offsetHeight;
       const centerOffset = reel.strip.offsetHeight / 2 - iconHeight / 2;
 
-      for (let i = 10; i < imgs.length; i++) {
-        if (imgs[i].src.includes(targetURL)) {
+      for (let i = 10; i < items.length; i++) {
+        const img = items[i].querySelector('img');
+        if (img.src.includes(targetURL)) {
           const offset = i * iconHeight;
           reel.pos = offset - centerOffset;
           reel.strip.style.transform = `translateY(${-reel.pos}px)`;
