@@ -206,7 +206,9 @@
       }
       const clone = strip.cloneNode(true);
       strip.parentNode.appendChild(clone);
-      reels.push({ strip, clone, pos: 0, speed: speeds[i], spinning: false });
+      const imgs = strip.querySelectorAll("img");
+      const iconHeight = imgs[0].offsetHeight;
+      reels.push({ strip, clone, imgs, iconHeight, pos: 0, speed: speeds[i], spinning: false });
     });
 
     function animate() {
@@ -229,8 +231,8 @@
     }
 
     function alignToIcon(reel, targetURL) {
-      const imgs = reel.strip.querySelectorAll("img");
-      const iconHeight = imgs[0].offsetHeight;
+      const imgs = reel.imgs;
+      const iconHeight = reel.iconHeight;
       const centerOffset = reel.strip.offsetHeight / 2 - iconHeight / 2;
 
       for (let i = 10; i < imgs.length; i++) {
