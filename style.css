@@ -4,6 +4,7 @@
   height: 1080px;
   background: url('img/bg.png') center/cover no-repeat;
   overflow: hidden;
+  perspective: 1000px;
 }
 
 .reel-container {
@@ -66,15 +67,25 @@
   filter: brightness(1) saturate(0.9) sepia(0.1);
 }
 
+
 .handle {
   position: absolute;
   width: 60px;
   height: 160px;
   top: 26%;
   left: 76%;
-  transform: translate(6.3%, -14.54%) scale(4);
   z-index: 15;
   pointer-events: none;
+}
+
+#handle {
+  transform: translate(6.3%, -14.54%) scale(4) rotateX(0deg);
+  transition: transform 0.25s ease;
+  transform-origin: top center;
+}
+
+#handle.pulled {
+  transform: translate(6.3%, -14.54%) scale(4) rotateX(40deg);
 }
 
 .handle img,

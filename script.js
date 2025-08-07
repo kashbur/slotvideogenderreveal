@@ -16,6 +16,7 @@ let rafId = null;
 let isSpinning = false;
 let spinCount = 0;
 let dimensionsReady = false;
+const handle = document.getElementById('handle');
 
 function getColorType(url) {
   if (url.includes("blue") || url.includes("boy")) return "blue";
@@ -156,9 +157,21 @@ function startSpin() {
   });
 }
 
+function pullHandleAndSpin() {
+  if (isSpinning || !dimensionsReady) return;
+  handle.classList.add('pulled');
+  setTimeout(() => handle.classList.remove('pulled'), 250);
+  startSpin();
+}
+
+const spinButton = document.getElementById('spinButton');
+if (spinButton) {
+  spinButton.addEventListener('click', pullHandleAndSpin);
+}
+
 document.addEventListener("keydown", e => {
-  if (e.code === "Space" && dimensionsReady) {
+  if (e.code === "Space") {
     e.preventDefault();
-    startSpin();
+    pullHandleAndSpin();
   }
 });
