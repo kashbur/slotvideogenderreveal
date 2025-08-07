@@ -158,3 +158,7 @@
   z-index: 20;
   pointer-events: none;
 }
+
+.reel-container.animate-glare::after {
+  animation: reel-glare 1s linear;
+}
