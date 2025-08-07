@@ -15,6 +15,7 @@ const reels = [];
 let rafId = null;
 let isSpinning = false;
 let spinCount = 0;
+let dimensionsReady = false;
 
 function getColorType(url) {
   if (url.includes("blue") || url.includes("boy")) return "blue";
@@ -38,36 +39,51 @@ function selectIcons() {
   return picked;
 }
 
-strips.forEach((strip, i) => {
-  const fragment = document.createDocumentFragment();
-  for (let j = 0; j < 30; j++) {
-    const img = document.createElement("img");
-    img.src = icons[j % icons.length];
-    fragment.appendChild(img);
-  }
-// Append a prebuilt fragment of icons (assumed created earlier for performance)
-strip.appendChild(fragment);
+window.addEventListener('load', () => {
+  const initPromises = [];
 
-// Clone the strip and append it for infinite scroll illusion
-const clone = strip.cloneNode(true);
-strip.parentNode.appendChild(clone);
+  strips.forEach((strip, i) => {
+    const fragment = document.createDocumentFragment();
+    for (let j = 0; j < 30; j++) {
+      const img = document.createElement("img");
+      img.src = icons[j % icons.length];
+      fragment.appendChild(img);
+    }
+    strip.appendChild(fragment);
 
-// Capture heights and images
-const height = strip.scrollHeight;
-const images = strip.querySelectorAll("img");
-const iconHeight = images[0]?.offsetHeight || 0;
+    const clone = strip.cloneNode(true);
+    strip.parentNode.appendChild(clone);
 
-// Push full reel data
-reels.push({
-  strip,
-  clone,
-  height,
-  pos: 0,
-  speed: speeds[i],
-  spinning: false,
-  images,
-  iconHeight
-});
+    const images = strip.querySelectorAll("img");
+
+    const reel = {
+      strip,
+      clone,
+      height: 0,
+      pos: 0,
+      speed: speeds[i],
+      spinning: false,
+      images,
+      iconHeight: 0
+    };
+    reels.push(reel);
+
+    const loadPromise = Promise.all(
+      Array.from(images).map(img => new Promise(res => {
+        if (img.complete) res();
+        else img.addEventListener('load', res, { once: true });
+      }))
+    ).then(() => {
+      reel.height = strip.scrollHeight;
+      reel.iconHeight = images[0]?.offsetHeight || 0;
+    });
+
+    initPromises.push(loadPromise);
+  });
+
+  Promise.all(initPromises).then(() => {
+    dimensionsReady = true;
+  });
 });
 
 function animate() {
@@ -107,7 +123,7 @@ function alignToIcon(reel, targetURL) {
 }
 
 function startSpin() {
-  if (isSpinning) return;
+  if (isSpinning || !dimensionsReady) return;
   isSpinning = true;
   spinCount++;
 
@@ -140,7 +156,7 @@ function startSpin() {
 }
 
 document.addEventListener("keydown", e => {
-  if (e.code === "Space") {
+  if (e.code === "Space" && dimensionsReady) {
     e.preventDefault();
     startSpin();
   }
