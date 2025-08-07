@@ -46,7 +46,9 @@ strips.forEach((strip, i) => {
   }
   const clone = strip.cloneNode(true);
   strip.parentNode.appendChild(clone);
-  reels.push({ strip, clone, pos: 0, speed: speeds[i], spinning: false });
+  const images = strip.querySelectorAll("img");
+  const iconHeight = images[0].offsetHeight;
+  reels.push({ strip, clone, pos: 0, speed: speeds[i], spinning: false, images, iconHeight });
 });
 
 function animate() {
@@ -69,8 +71,8 @@ function animate() {
 }
 
 function alignToIcon(reel, targetURL) {
-  const imgs = reel.strip.querySelectorAll("img");
-  const iconHeight = imgs[0].offsetHeight;
+  const imgs = reel.images;
+  const iconHeight = reel.iconHeight;
   const centerOffset = reel.strip.offsetHeight / 2 - iconHeight / 2;
 
   for (let i = 10; i < imgs.length; i++) {
