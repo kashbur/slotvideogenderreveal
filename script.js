@@ -39,11 +39,13 @@ function selectIcons() {
 }
 
 strips.forEach((strip, i) => {
+  const fragment = document.createDocumentFragment();
   for (let j = 0; j < 30; j++) {
     const img = document.createElement("img");
     img.src = icons[j % icons.length];
-    strip.appendChild(img);
+    fragment.appendChild(img);
   }
+  strip.appendChild(fragment);
   const clone = strip.cloneNode(true);
   strip.parentNode.appendChild(clone);
   reels.push({ strip, clone, pos: 0, speed: speeds[i], spinning: false });
