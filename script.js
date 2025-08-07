@@ -80,8 +80,8 @@ function animate() {
 
     if (reel.pos >= scrollH) reel.pos = 0;
 
-    reel.strip.style.transform = `translateY(${-reel.pos}px)`;
-    reel.clone.style.transform = `translateY(${-reel.pos + scrollH}px)`;
+    reel.strip.style.transform = `translateY(${reel.pos}px)`;
+    reel.clone.style.transform = `translateY(${reel.pos - scrollH}px)`;
 
     anySpinning = true;
   });
@@ -92,14 +92,15 @@ function animate() {
 function alignToIcon(reel, targetURL) {
   const imgs = reel.images;
   const iconHeight = reel.iconHeight;
-  const centerOffset = reel.strip.offsetHeight / 2 - iconHeight / 2;
+  const containerHeight = reel.strip.parentNode.offsetHeight;
+  const centerOffset = containerHeight / 2 - iconHeight / 2;
 
   for (let i = 10; i < imgs.length; i++) {
     if (imgs[i].src.includes(targetURL)) {
       const offset = i * iconHeight;
       reel.pos = offset - centerOffset;
-      reel.strip.style.transform = `translateY(${-reel.pos}px)`;
-      reel.clone.style.transform = `translateY(${-reel.pos + reel.height}px)`;
+      reel.strip.style.transform = `translateY(${reel.pos}px)`;
+      reel.clone.style.transform = `translateY(${reel.pos - reel.height}px)`;
       break;
     }
   }
@@ -116,6 +117,7 @@ function startSpin() {
     reel.spinning = true;
     reel.strip.classList.add('spinning');
     reel.clone.classList.add('spinning');
+    reel.clone.style.display = '';
   });
 
   animate();
@@ -127,6 +129,7 @@ function startSpin() {
       reels[i].strip.classList.remove('spinning');
       reels[i].clone.classList.remove('spinning');
       alignToIcon(reels[i], chosen[i]);
+      reels[i].clone.style.display = 'none';
 
       if (i === reels.length - 1) {
         cancelAnimationFrame(rafId);
