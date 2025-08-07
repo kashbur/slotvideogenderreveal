@@ -1,3 +1,5 @@
+// Slot Machine JS with Glare Effect Integration
+
 const icons = [
   "img/blue7.png",
   "img/bluefoot.png",
@@ -131,18 +133,15 @@ function startSpin() {
 
   const chosen = selectIcons();
 
-  // ✨ Trigger glare animation
-  const reelContainers = document.querySelectorAll('.reel-container');
-  reelContainers.forEach(container => {
-      const reelContainers = document.querySelectorAll('.reel-container');
-  reelContainers.forEach(container => container.classList.add('glare-active'));
-
   reels.forEach((reel, i) => {
     reel.spinning = true;
     reel.strip.classList.add('spinning');
     reel.clone.classList.add('spinning');
     reel.clone.style.display = '';
   });
+
+  const reelContainers = document.querySelectorAll('.reel-container');
+  reelContainers.forEach(container => container.classList.add('glare-active'));
 
   animate();
 
@@ -158,6 +157,7 @@ function startSpin() {
       if (i === reels.length - 1) {
         cancelAnimationFrame(rafId);
         isSpinning = false;
+        reelContainers.forEach(container => container.classList.remove('glare-active'));
       }
     }, delay);
   });
