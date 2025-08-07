@@ -42,22 +42,23 @@
   background: linear-gradient(
     180deg,
     rgba(255,255,255,0) 0%,
-    rgba(255,255,255,0.3) 50%,
+    rgba(255,255,255,0.35) 50%,
     rgba(255,255,255,0) 100%
   );
   mix-blend-mode: screen;
-  transform: skewX(-10deg);
+  transform: skewY(-10deg);
   opacity: 0;
   z-index: 3;
 }
 
 .reel-container.animate-glare::after {
   animation: reel-glare 1s linear infinite;
+  opacity: 1;
 }
 
 @keyframes reel-glare {
-  0% { transform: translateY(-100%) skewX(-10deg); }
-  100% { transform: translateY(200%) skewX(-10deg); }
+  0% { top: -100%; }
+  100% { top: 100%; }
 }
 
 #reel1-container { left: 32.06%; top: 24.73%; }
@@ -156,8 +157,4 @@
   height: 100%;
   z-index: 20;
   pointer-events: none;
-}
-
-.reel-container.animate-glare::after {
-  animation: reel-glare 1s linear;
 }
