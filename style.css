@@ -39,6 +39,10 @@
   align-items: center;
   transition: transform 1s ease-out;
 }
+.strip.spinning {
+  transition: none;
+}
+
 
 .strip-item {
   height: 100%;
