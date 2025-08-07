@@ -45,12 +45,29 @@ strips.forEach((strip, i) => {
     img.src = icons[j % icons.length];
     fragment.appendChild(img);
   }
-  strip.appendChild(fragment);
-  const clone = strip.cloneNode(true);
-  strip.parentNode.appendChild(clone);
-  const images = strip.querySelectorAll("img");
-  const iconHeight = images[0].offsetHeight;
-  reels.push({ strip, clone, pos: 0, speed: speeds[i], spinning: false, images, iconHeight });
+// Append a prebuilt fragment of icons (assumed created earlier for performance)
+strip.appendChild(fragment);
+
+// Clone the strip and append it for infinite scroll illusion
+const clone = strip.cloneNode(true);
+strip.parentNode.appendChild(clone);
+
+// Capture heights and images
+const height = strip.scrollHeight;
+const images = strip.querySelectorAll("img");
+const iconHeight = images[0]?.offsetHeight || 0;
+
+// Push full reel data
+reels.push({
+  strip,
+  clone,
+  height,
+  pos: 0,
+  speed: speeds[i],
+  spinning: false,
+  images,
+  iconHeight
+});
 });
 
 function animate() {
@@ -59,7 +76,7 @@ function animate() {
     if (!reel.spinning) return;
 
     reel.pos += reel.speed;
-    const scrollH = reel.strip.scrollHeight;
+    const scrollH = reel.height;
 
     if (reel.pos >= scrollH) reel.pos = 0;
 
@@ -82,7 +99,7 @@ function alignToIcon(reel, targetURL) {
       const offset = i * iconHeight;
       reel.pos = offset - centerOffset;
       reel.strip.style.transform = `translateY(${-reel.pos}px)`;
-      reel.clone.style.transform = `translateY(${-reel.pos + reel.strip.scrollHeight}px)`;
+      reel.clone.style.transform = `translateY(${-reel.pos + reel.height}px)`;
       break;
     }
   }
